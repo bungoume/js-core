@@ -75,7 +75,10 @@ export default class ImgixClient {
         const encodedValue =
           key.substr(-2) === '64'
             ? Base64.encodeURI(value)
-            : encodeURIComponent(value);
+            : encodeURIComponent(value).replace(
+                /[!'()*]/g,
+                (c) => "%" + c.charCodeAt(0).toString(16)
+              );
         prev.push(`${encodedKey}=${encodedValue}`);
         return prev;
       }, []),
